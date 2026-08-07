@@ -2,10 +2,10 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 // This is the main entry point for the application.
 public class Main {
-    // Buggy binary search implementation
+    // Binary search implementation
     public static int binarySearch(int[] arr, int b) {
         int i = 0, j = arr.length - 1;
-        while (i < j) { // Bug: should
+        while (i <= j) { // Fix: use <= to check when i == j
             int a = i + (j - i) / 2;
             if (arr[a] == b) {
                 return a;
