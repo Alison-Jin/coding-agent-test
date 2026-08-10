@@ -2,6 +2,7 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 // This is the main entry point for the application.
 public class Main {
+    // Added per issue request: comment in Main.java
     // Buggy binary search implementation
     public static int binarySearch(int[] arr, int b) {
         int i = 0, j = arr.length - 1;
