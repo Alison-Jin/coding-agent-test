@@ -24,6 +24,7 @@ public class Main {
             System.out.println("Example: java Main 1 2 3 4 5 5");
             return;
         }
+        // Parse the input values before searching.
         int[] arr = new int[args.length - 1];
         for (int i = 0; i < args.length - 1; i++) {
             arr[i] = Integer.parseInt(args[i]);
