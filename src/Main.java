@@ -1,35 +1,52 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-// This is the main entry point for the application.
 public class Main {
-    // Buggy binary search implementation
-    public static int binarySearch(int[] arr, int b) {
-        int i = 0, j = arr.length - 1;
-        while (i < j) { // Bug: should
-            int a = i + (j - i) / 2;
-            if (arr[a] == b) {
-                return a;
-            } else if (arr[a] < b) {
-                i = a + 1;
-            } else {
-                j = a - 1;
-            }
-        }
-        return -1;
-    }
-
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java Main <array elements> <target value>");
-            System.out.println("Example: java Main 1 2 3 4 5 5");
+        if (args.length == 0) {
+            printUsage();
             return;
         }
-        int[] arr = new int[args.length - 1];
-        for (int i = 0; i < args.length - 1; i++) {
-            arr[i] = Integer.parseInt(args[i]);
+
+        ShoppingList shoppingList = new ShoppingList();
+        int position = 0;
+        boolean listPrinted = false;
+        try {
+            while (position < args.length) {
+                String command = args[position++];
+                if ("create".equals(command) || "add".equals(command)) {
+                    if (position == args.length) {
+                        throw new IllegalArgumentException(command + " requires an item.");
+                    }
+                    shoppingList.addItem(args[position++]);
+                    listPrinted = false;
+                } else if ("update".equals(command)) {
+                    if (position + 1 >= args.length) {
+                        throw new IllegalArgumentException("update requires an item number and a new item.");
+                    }
+                    int itemNumber = Integer.parseInt(args[position++]);
+                    shoppingList.updateItem(itemNumber - 1, args[position++]);
+                    listPrinted = false;
+                } else if ("list".equals(command)) {
+                    printList(shoppingList);
+                    listPrinted = true;
+                } else {
+                    throw new IllegalArgumentException("Unknown command: " + command);
+                }
+            }
+            if (!listPrinted) {
+                printList(shoppingList);
+            }
+        } catch (IllegalArgumentException | IndexOutOfBoundsException exception) {
+            System.out.println("Error: " + exception.getMessage());
+            printUsage();
         }
-        int target = Integer.parseInt(args[args.length - 1]);
-        int result = binarySearch(arr, target);
-        System.out.println("Result index: " + result); // Should print the correct index or -1 if not found
+    }
+
+    private static void printList(ShoppingList shoppingList) {
+        for (int i = 0; i < shoppingList.getItems().size(); i++) {
+            System.out.println((i + 1) + ". " + shoppingList.getItems().get(i));
+        }
+    }
+
+    private static void printUsage() {
+        System.out.println("Usage: java Main create <item> [add <item>] [update <number> <item>] [list]");
     }
 }
