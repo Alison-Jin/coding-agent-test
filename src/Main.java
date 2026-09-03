@@ -41,8 +41,9 @@ public class Main {
     }
 
     private static void printList(ShoppingList shoppingList) {
+        System.out.println("🛒 Shopping List:");
         for (int i = 0; i < shoppingList.getItems().size(); i++) {
-            System.out.println((i + 1) + ". " + shoppingList.getItems().get(i));
+            System.out.println("✅ " + (i + 1) + ". " + shoppingList.getItems().get(i));
         }
     }
 
