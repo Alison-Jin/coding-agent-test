@@ -1,35 +1,82 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-// This is the main entry point for the application.
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
-    // Buggy binary search implementation
-    public static int binarySearch(int[] arr, int b) {
-        int i = 0, j = arr.length - 1;
-        while (i < j) { // Bug: should
-            int a = i + (j - i) / 2;
-            if (arr[a] == b) {
-                return a;
-            } else if (arr[a] < b) {
-                i = a + 1;
-            } else {
-                j = a - 1;
+    public static List<String> createShoppingList(String[] items) {
+        List<String> shoppingList = new ArrayList<>();
+        if (items == null) {
+            return shoppingList;
+        }
+
+        for (String item : items) {
+            if (item != null) {
+                String trimmed = item.trim();
+                if (!trimmed.isEmpty()) {
+                    shoppingList.add(trimmed);
+                }
             }
         }
-        return -1;
+        return shoppingList;
+    }
+
+    public static boolean updateShoppingList(List<String> shoppingList, String currentItem, String updatedItem) {
+        if (shoppingList == null || currentItem == null || updatedItem == null) {
+            return false;
+        }
+
+        String current = currentItem.trim();
+        String updated = updatedItem.trim();
+        if (current.isEmpty() || updated.isEmpty()) {
+            return false;
+        }
+
+        int index = shoppingList.indexOf(current);
+        if (index == -1) {
+            return false;
+        }
+
+        shoppingList.set(index, updated);
+        return true;
     }
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java Main <array elements> <target value>");
-            System.out.println("Example: java Main 1 2 3 4 5 5");
+            System.out.println("Usage:");
+            System.out.println("  java Main create <item1> <item2> ...");
+            System.out.println("  java Main update <currentItem> <updatedItem> <item1> <item2> ...");
             return;
         }
-        int[] arr = new int[args.length - 1];
-        for (int i = 0; i < args.length - 1; i++) {
-            arr[i] = Integer.parseInt(args[i]);
+
+        String action = args[0];
+        if ("create".equalsIgnoreCase(action)) {
+            String[] items = new String[args.length - 1];
+            System.arraycopy(args, 1, items, 0, items.length);
+            List<String> shoppingList = createShoppingList(items);
+            System.out.println("Shopping list: " + shoppingList);
+            return;
         }
-        int target = Integer.parseInt(args[args.length - 1]);
-        int result = binarySearch(arr, target);
-        System.out.println("Result index: " + result); // Should print the correct index or -1 if not found
+
+        if ("update".equalsIgnoreCase(action)) {
+            if (args.length < 4) {
+                System.out.println("Usage: java Main update <currentItem> <updatedItem> <item1> <item2> ...");
+                return;
+            }
+
+            String currentItem = args[1];
+            String updatedItem = args[2];
+            String[] items = new String[args.length - 3];
+            System.arraycopy(args, 3, items, 0, items.length);
+
+            List<String> shoppingList = createShoppingList(items);
+            boolean updated = updateShoppingList(shoppingList, currentItem, updatedItem);
+            if (updated) {
+                System.out.println("Updated shopping list: " + shoppingList);
+            } else {
+                System.out.println("Item not found. Shopping list: " + shoppingList);
+            }
+            return;
+        }
+
+        System.out.println("Unknown action: " + action);
     }
 }
