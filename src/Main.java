@@ -19,6 +19,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        // hello cloud
         System.out.println("hi cloud");
         if (args.length < 2) {
             System.out.println("Usage: java Main <array elements> <target value>");
