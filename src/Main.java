@@ -3,15 +3,19 @@
 // This is the main entry point for the application.
 public class Main {
     // Buggy binary search implementation
+    // Searches an ascending array over an inclusive [i, j] range.
+    // Note: the loop exits without checking the last element when i == j.
     public static int binarySearch(int[] arr, int b) {
         int i = 0, j = arr.length - 1;
-        while (i < j) { // Bug: should
+        while (i < j) { // Continue while at least two candidates remain.
             int a = i + (j - i) / 2;
             if (arr[a] == b) {
                 return a;
             } else if (arr[a] < b) {
+                // The midpoint is too small, so discard it and everything before it.
                 i = a + 1;
             } else {
+                // The midpoint is too large, so discard it and everything after it.
                 j = a - 1;
             }
         }
